@@ -42,14 +42,14 @@ module testbench();
 
     #2 ON=1; Ok[2]=1; Ok[1] = 0; Ok[0]= 0; PB1=0; PB2=0; PB3=0; PB4=0; //Regreso a Home de FSM temperatura
 
-    #2 ON=1; Ok[2]=0; Ok[1] = 0; Ok[0]= 1; PB1=0; PB2=0; PB3=1; PB4=0; //Paso de FSM Velocidad a FSM Temperatura & Subir una temperatura y un modo (Rango 3 & Templado)
+    #2 ON=1; Ok[2]=0; Ok[1] = 0; Ok[0]= 1; PB1=0; PB2=0; PB3=1; PB4=0; //Paso de Home a FSM Temperatura & Subir una temperatura y un modo (Rango 3 & Templado)
 
     #2 ON=1; Ok[2]=0; Ok[1] = 1; Ok[0]= 1; PB1=1; PB2=0; PB3=0; PB4=0; //Paso de FSM Temperatura a FSM Velocidad & Subir una velocidad (High)
 
     #2 ON=1; Ok[2]=1; Ok[1] = 0; Ok[0]= 1; PB1=0; PB2=0; PB3=0; PB4=0; //Regreso a Home de FSM Velocidad
     #2 ON=0; Ok[2]=0; Ok[1] = 0; Ok[0]= 0; PB1=0; PB2=0; PB3=0; PB4=0; //Máquina Control Apagada
 
-    #1 $finish;
+    #5 $finish;
   end
 
   initial begin

@@ -9,6 +9,16 @@ module FlipFlopD(input wire clock, reset, input wire D, output reg Y);
       end
     end
 endmodule
+//Buffer de 2 bits
+module buffer_1(input wire enable, input wire [1:0]A, output wire [1:0] Y);
+  assign Y = (enable)? A : 2'b0;
+endmodule
+
+//Buffer de 3 bits
+module buffer_2(input wire enable, input wire [2:0]A, output wire [2:0] Y);
+  assign Y = (enable)? A : 3'b0;
+endmodule
+
 //FSM Antirebote
 module antirebote(input wire clock, reset, PB, output wire Y);
   wire S0F, S0;
@@ -75,6 +85,7 @@ endmodule
 //FSM Aire acondicionado
 module FSMAire(input wire clock, reset, ON, PB1, PB2, PB3, PB4, input wire [2:0] Ok, output wire [1:0] Led1, LCD1, output wire [2:0] LCD2, Led2);
   wire PB_1, PB_2, PB_3, PB_4; //Salidas antirebote
+  wire A, B, C, D; //Salidas de la FSM Control
   wire [1:0] Vel, Y; //Salidas FSM Velocidad y Control
   wire [2:0] T, M; //Salidas FSM Temperatura y Modo
 
@@ -86,8 +97,14 @@ module FSMAire(input wire clock, reset, ON, PB1, PB2, PB3, PB4, input wire [2:0]
   FSMTem FSM_TM(clock, reset, PB_3, PB_4, T, M);
   FSMControl FSM_CONTROL(clock, reset, ON, Vel, Ok, T, M, Y);
 
+  assign A = ~Y[1] & Y[0];
+  assign B = Y[1] & ~Y[0];
+  assign C = Y[1] & Y[0];
+  assign D = A | B | C;
+
+  buffer_1 Buffer1(D, Vel, LCD1);
+  buffer_2 Buffer2(D, T, LCD2);
+  buffer_2 Buffer3(D, M, Led2);
+
   assign Led1 = Y;
-  assign LCD1 = ON & Vel;
-  assign LCD2 = ON & T;
-  assign Led2 = ON & M;
 endmodule
